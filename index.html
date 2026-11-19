@@ -79,8 +79,17 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 .mini.in{opacity:1}
 .mini img{width:384px;height:420px;object-fit:cover;object-position:50% 30%;display:block}
 .mini p{height:80px;display:flex;align-items:center;justify-content:center;font:400 46px 'Great Vibes','TeX Gyre Chorus',cursive;color:#8b2f5c}
-#mCount{top:1470px;font-size:80px}
-#mEnd{top:1480px;font-size:80px}
+#mEnd{top:1625px;font-size:76px}
+#thread{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:visible;pointer-events:none}
+#thread path{fill:none;stroke:#b07a52;stroke-width:5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s ease-in-out;filter:drop-shadow(0 3px 3px rgba(80,30,40,.3))}
+#thread.on path{stroke-dashoffset:0}
+.hang{position:absolute;width:440px;background:#fff;padding:18px 18px 0;box-shadow:0 0 0 3px #f1d9a8,0 22px 50px rgba(40,20,40,.3);transform-origin:50% -14px;opacity:0;transform:translateY(-1500px) rotate(-20deg);transition:transform 1.2s cubic-bezier(.2,1.25,.4,1),opacity .4s}
+.hang.in{opacity:1}
+.hang.sw{animation:sway 3.2s ease-in-out infinite alternate}
+@keyframes sway{from{rotate:-2.5deg}to{rotate:2.5deg}}
+.hang img{width:404px;height:360px;object-fit:cover;object-position:50% 30%;display:block}
+.hang p{height:84px;display:flex;align-items:center;justify-content:center;font:400 48px 'Great Vibes','TeX Gyre Chorus',cursive;color:#8b2f5c}
+.hang i{position:absolute;left:50%;top:-34px;margin-left:-14px;width:28px;height:66px;border-radius:6px;background:linear-gradient(90deg,#c99a6b,#f3d9b5 50%,#b9875a);box-shadow:0 3px 6px rgba(0,0,0,.25)}
 /* ===== butterflies ===== */
 .bf{position:absolute;width:190px;height:166px;margin:-83px 0 0 -95px;cursor:pointer;transition:left 2.2s ease-in,top 2.2s ease-in,opacity 1.5s}
 .bf svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 16px rgba(255,255,255,.95)) drop-shadow(0 6px 12px rgba(150,40,80,.3));animation:bob 2.6s ease-in-out infinite alternate}
@@ -132,6 +141,8 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 #e0{top:1280px;left:330px;right:30px;font-size:80px}
 #lD{top:430px;left:500px;right:50px;font-size:92px}
 #inv{position:absolute;left:210px;right:100px;top:640px;text-align:center;font:italic 600 43px/1.36 'Cormorant Garamond','Crimson Pro',Georgia,serif;color:#4a1a30;white-space:pre-line}
+#inv .ln{display:block;opacity:0;transform:translateY(14px);filter:blur(4px);transition:opacity .7s,transform .7s,filter .7s}
+#inv .ln.in{opacity:1;transform:none;filter:none}
 #isg{top:1260px;left:400px;right:60px;font-size:68px;line-height:1.25}
 /* ===== swing ===== */
 #wSub{top:1450px;left:540px;right:10px}
@@ -167,6 +178,12 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 /* ===== hint ===== */
 #hint{position:absolute;left:40px;right:40px;bottom:90px;z-index:40;text-align:center;opacity:0;transition:opacity .5s;pointer-events:none}
 #hint span{display:inline-block;font:italic 600 42px 'Cormorant Garamond','Crimson Pro',Georgia,serif;color:#fff;background:linear-gradient(180deg,#d77aa2,#a8436f 55%,#6e1f47);padding:16px 50px;border-radius:60px;box-shadow:0 0 0 4px #fff,0 12px 30px rgba(94,26,60,.4);animation:bp 1.6s ease-in-out infinite}
+#intro{position:fixed;inset:0;z-index:120;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%,#fff0f5,#f6c6d6 70%,#e9a5bd);cursor:pointer;transition:opacity .8s}
+#intro.show{display:flex}
+#intro.hide{opacity:0;pointer-events:none}
+#intro .ih{font-size:90px;animation:bp 1.2s ease-in-out infinite}
+#intro .it{font:400 64px 'Great Vibes','TeX Gyre Chorus',cursive;color:#741a40;margin-top:10px;text-align:center;padding:0 20px}
+#intro .is{font:italic 600 24px 'Cormorant Garamond','Crimson Pro',Georgia,serif;color:#8b2f5c;letter-spacing:2px;margin-top:8px;animation:bp 1.6s ease-in-out infinite}
 #flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:45;transition:opacity .35s}
 </style></head>
 <body>
@@ -182,6 +199,7 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 </svg>
 <div id="outer"></div>
 <div id="start"></div>
+<div id="intro"><div class="ih">💗</div><div class="it">A surprise for you</div><div class="is">tap to open</div></div>
 <div id="replay">↻ Replay</div>
 <audio id="song" preload="auto" loop></audio>
 <div id="wrap"><div id="stage">
@@ -203,7 +221,6 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
   <div id="gift"><div id="gRays"></div><div id="gBody"></div><div id="gLid"><svg id="gBow" viewBox="0 0 200 110"><path d="M100 90 C60 20 0 20 10 60 C18 95 70 95 100 90Z M100 90 C140 20 200 20 190 60 C182 95 130 95 100 90Z" fill="#ffd56b" stroke="#8a5a12" stroke-width="5"/><circle cx="100" cy="88" r="18" fill="#e0a030" stroke="#8a5a12" stroke-width="5"/></svg></div></div>
   <div class="t brush head" id="m0" style="top:140px">Our Little Memories</div>
   <div id="pols"></div>
-  <div class="t brush head" id="mCount"></div>
   <div class="t brush head" id="mEnd">and many more to come…</div>
 </div>
 
@@ -413,12 +430,16 @@ $("wrap").addEventListener("pointerdown", e => { const [x, y] = stagePt(e); spar
 async function type(el, txt, ms) { for (let i = 1; i <= txt.length; i++) { el.textContent = txt.slice(0, i) + (i < txt.length ? "|" : ""); await wait(ms); } }
 /* ===== 1 cover plays on its own ===== */
 TW = [[200, 400, 680, 300]];
-(async () => { await wait(500); await write("cH", "Happy Birthday", 70); await wait(200); await write("cN", NM, 120);
-  sparks(540, 580, 140, 14); hearts(540, 640, 24); await wait(400); on("cPh"); await wait(1000); on("cBtn"); })();
+let coverStarted = false;
+async function startCover() { if (coverStarted) return; coverStarted = true; await wait(500); await write("cH", "Happy Birthday", 70); await wait(200); await write("cN", NM, 120);
+  sparks(540, 580, 140, 14); hearts(540, 640, 24); await wait(400); on("cPh"); await wait(1000); on("cBtn"); }
+const song = $("song"); song.src = ORDER.song;
+$("intro").querySelector(".it").textContent = "A surprise for " + NM;
+song.play().then(startCover).catch(() => $("intro").classList.add("show"));        // phones need one tap before music can play
+$("intro").addEventListener("click", () => { song.play().catch(() => {}); $("intro").classList.add("hide"); startCover(); });
 /* ===== 2 gift box, then memories one by one ===== */
 async function giftAndMemories() {
   showLayer("memories"); ambient = "sparkle"; TW = [[150, 330, 780, 140]]; on("s2");
-  const imgs = await Promise.all(ORDER.memories.map(m => loadImg(m[0])));
   await write("g0", undefined, 60); await wait(500);
   for (let i = 0; i < 3; i++) {
     await waitTap(i === 0 ? "Tap the gift 3 times 🎁" : `Again! ${i} / 3`);
@@ -427,25 +448,16 @@ async function giftAndMemories() {
   await wait(400); $("gift").classList.add("open"); flash(.8); sparks(540, 950, 220, 20); confetti(540, 1050, 180); hearts(540, 950, 30); await wait(1600);
   $("gift").style.opacity = 0; off("g0"); await wait(700);
   TW = [[120, 140, 840, 140]]; await write("m0", undefined, 50);
-  const ROT = [-4, 3, -3, 4];
-  $("pols").innerHTML = ORDER.memories.map((m, i) => {           // each photo keeps its own shape — nothing gets cut
-    const ar = (imgs[i].naturalWidth || 3) / (imgs[i].naturalHeight || 4), iw = Math.round(Math.min(700, 800 * ar)), ih = Math.round(iw / ar), pw = iw + 56, ph = ih + 28 + 130;
-    return `<div class="pol" id="pl${i}" style="left:${540 - pw / 2}px;top:${Math.round(320 + (1110 - ph) / 2)}px;width:${pw}px"><img src="${m[0]}" style="width:${iw}px;height:${ih}px" alt=""><p>${m[1]}</p></div>`; }).join("");
-  for (let i = 0; i < ORDER.memories.length; i++) {
-    await waitTap(i === 0 ? "Tap to open the first memory" : `Tap for memory ${i + 1}`);
-    if (i > 0) { const o = $("pl" + (i - 1)); o.style.transform = `translate(-1300px,120px) rotate(-35deg)`; o.style.opacity = 0; }
-    const p = $("pl" + i); p.classList.add("in"); p.style.zIndex = 10 + i;
-    await wait(30); p.style.transform = `rotate(${ROT[i]}deg)`;
-    $("mCount").textContent = `${i + 1} / ${ORDER.memories.length}`; on("mCount");
-    await wait(700); sparks(540, 800, 90, 16); hearts(540, 850, 14); flash(.15); await wait(700);
-  }
-  await waitTap("Tap to see all memories ✨");
-  const L = $("pl" + (ORDER.memories.length - 1)); L.style.transform = `translate(0,-1500px) rotate(20deg)`; L.style.opacity = 0; off("mCount"); await wait(500);
-  const GP = [[90, 330], [570, 330], [90, 900], [570, 900]], GR = [-4, 3, 3, -3];
-  $("pols").insertAdjacentHTML("beforeend", ORDER.memories.slice(0, 4).map((m, i) => `<div class="mini" id="mn${i}" style="left:${GP[i][0]}px;top:${GP[i][1]}px"><img src="${m[0]}" alt=""><p>${m[1]}</p></div>`).join(""));
-  await wait(50);
-  for (let i = 0; i < Math.min(4, ORDER.memories.length); i++) { const m = $("mn" + i); m.classList.add("in"); m.style.transform = `rotate(${GR[i]}deg)`; sparks(GP[i][0] + 210, GP[i][1] + 260, 50, 12); await wait(300); }
-  confetti(540, 1900, 140); await write("mEnd", undefined, 45); await wait(1200);
+  // all memories hang together on one thread
+  const N = Math.min(4, ORDER.memories.length), SP = [[300, 330], [780, 560], [300, 900], [780, 1130]], GR = [-5, 4, -4, 5];
+  const pts = [[-20, 250], ...SP.slice(0, N), [1100, SP[N - 1][1] + 120]];
+  let d = `M${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; d += ` Q${(x0 + x1) / 2} ${Math.max(y0, y1) + 70} ${x1} ${y1}`; }
+  $("pols").innerHTML = `<svg id="thread" viewBox="0 0 1080 1920"><path pathLength="1" d="${d}"/></svg>` +
+    ORDER.memories.slice(0, N).map((m, i) => `<div class="hang" id="hg${i}" style="left:${SP[i][0] - 220}px;top:${SP[i][1]}px"><i></i><img src="${m[0]}" alt=""><p>${m[1]}</p></div>`).join("");
+  await wait(50); $("thread").classList.add("on"); await wait(1400);
+  for (let i = 0; i < N; i++) { const h = $("hg" + i); h.classList.add("in"); h.style.transform = `rotate(${GR[i]}deg)`; setTimeout(() => h.classList.add("sw"), 1200); sparks(SP[i][0], SP[i][1] + 200, 70, 14); hearts(SP[i][0], SP[i][1] + 200, 10); await wait(900); }
+  confetti(540, 1900, 140); await write("mEnd", undefined, 45); await wait(800);
   await waitTap("Tap · next surprise");
   off("s2"); await wait(1000);
 }
@@ -459,7 +471,9 @@ async function letter() {
   flash(.6); $("env").classList.add("go"); await wait(900);
   TW = [[540, 440, 460, 100]];
   await write("lD", "Dear " + NM + ",", 70); await wait(300);
-  await type($("inv"), ORDER.letter, 45); await write("isg", ORDER.sign, 40); hearts(700, 1380, 20); await wait(1800);
+  $("inv").innerHTML = ORDER.letter.split("\n").map(l => `<span class="ln">${esc(l)}</span>`).join("");
+  for (const ln of $("inv").querySelectorAll(".ln")) { ln.classList.add("in"); await wait(320); }
+  await write("isg", ORDER.sign, 40); hearts(700, 1380, 20); await wait(1800);
   await waitTap("Tap · a cute surprise");
   off("s4"); await wait(1000);
 }
@@ -600,7 +614,7 @@ async function story() {
   on("ringBox"); sparks(540, 900, 200, 20); await wait(1500); await write("fT", undefined, 60); hearts(540, 1220, 30);
   await wait(9000); fwOn = false; $("replay").style.display = "block";
 }
-$("start").addEventListener("click", () => { const a = $("song"); a.src = ORDER.song; a.play().catch(() => {}); story(); }, { once: true });
+$("start").addEventListener("click", () => { if (song.paused) song.play().catch(() => {}); startCover(); story(); }, { once: true });
 $("replay").addEventListener("pointerdown", e => e.stopPropagation());
 $("replay").addEventListener("click", () => location.reload());
 requestAnimationFrame(frame);
