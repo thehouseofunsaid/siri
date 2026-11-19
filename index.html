@@ -6,21 +6,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@1,500;1,600;1,700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#f7d6e0;touch-action:none;-webkit-user-select:none;user-select:none;font-family:'Cormorant Garamond','Crimson Pro',Georgia,serif}
-/* ===== blurred fill outside the main screen (laptops / tall phones) ===== */
-#outer{position:fixed;inset:0;z-index:0}
-#outer img{position:absolute;inset:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;filter:blur(40px) brightness(1.03);opacity:0;transition:opacity 1.2s}
-#outer img.on{opacity:1}
+html,body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;background:#f7d6e0;touch-action:none;-webkit-user-select:none;user-select:none;font-family:'Cormorant Garamond','Crimson Pro',Georgia,serif}
+/* ===== soft pink outside the main screen (laptops / tall phones) ===== */
+#outer{position:fixed;inset:0;z-index:0;background:radial-gradient(circle at 50% 40%,#fbe3ea,#f3c3d2 70%,#e8a9bf)}
 #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:5}
 #stage{position:relative;width:1080px;height:1920px;flex:none;overflow:hidden;box-shadow:0 0 90px rgba(94,26,60,.18)}
 /* ===== picture backgrounds (locked to the screen, never move) ===== */
-#bgs{position:absolute;inset:0}
+#bgs{position:absolute;inset:0;background:linear-gradient(#f9dbe4,#f4c4d3)}
 .layer{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity 1.2s}
 .layer.on{opacity:1}
-.layer .back{position:absolute;inset:-40px;width:1160px;height:2000px;object-fit:cover;filter:blur(36px) brightness(1.04)}
 .zoom{position:absolute;inset:0;transform-origin:50% 45%}
-.layer.on .zoom{animation:kb 16s ease-out forwards}
-@keyframes kb{from{transform:scale(1.14)}to{transform:scale(1)}}
+.layer.on .zoom{animation:kb 2.4s cubic-bezier(.2,.8,.3,1) forwards,breathe 7s ease-in-out 2.4s infinite alternate}
+@keyframes kb{from{transform:scale(1.16)}to{transform:scale(1)}}
+@keyframes breathe{from{transform:scale(1)}to{transform:scale(1.06)}}
 .art{position:absolute;left:0;top:0;transform-origin:0 0}
 .art img.main{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
 .td{position:absolute;overflow:hidden;-webkit-mask:radial-gradient(closest-side,#000 72%,transparent 100%);mask:radial-gradient(closest-side,#000 72%,transparent 100%);animation:tdance 1.5s ease-in-out infinite alternate}
@@ -33,7 +31,7 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 .scene{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity 1s}.scene.on{opacity:1}
 .t{position:absolute;left:60px;right:60px;text-align:center;pointer-events:none;opacity:0;transform:translateY(24px);transition:opacity 1s,transform 1s}.t.on{opacity:1;transform:none}
 /* ===== the shining writing (same style on every screen) ===== */
-.brush{font-family:'Great Vibes','TeX Gyre Chorus',cursive;font-weight:400;line-height:1.25;white-space:nowrap;background:linear-gradient(110deg,#5a0f2e 0%,#741a40 35%,#9c3560 46%,#c25e88 50%,#9c3560 54%,#741a40 65%,#5a0f2e 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 3.4s linear infinite;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #fff) drop-shadow(0 0 14px rgba(255,255,255,.9)) drop-shadow(0 4px 8px rgba(94,26,60,.25))}
+.brush{font-family:'Great Vibes','TeX Gyre Chorus',cursive;font-weight:400;line-height:1.25;white-space:nowrap;background:linear-gradient(110deg,#5a0f2e 0%,#741a40 35%,#9c3560 46%,#c25e88 50%,#9c3560 54%,#741a40 65%,#5a0f2e 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 3.4s linear infinite;filter:drop-shadow(0 0 3px #fff) drop-shadow(0 3px 10px rgba(255,255,255,.85))}
 .brush.gold{background-image:linear-gradient(110deg,#fff3dc 0%,#ffe2b0 30%,#f3c77a 40%,#fffaf0 47%,#ffffff 50%,#fffaf0 53%,#f3c77a 60%,#ffe2b0 75%,#fff3dc 100%);filter:drop-shadow(0 2px 2px rgba(70,35,15,.55)) drop-shadow(0 0 14px rgba(90,45,20,.35))}
 .t.brush{padding:.12em 0 .3em;margin-top:-.12em;transform:scale(1.18);-webkit-mask-image:linear-gradient(90deg,#000 42%,transparent 58%);mask-image:linear-gradient(90deg,#000 42%,transparent 58%);-webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:100% 0;mask-position:100% 0;transition:opacity .6s,transform 1.6s cubic-bezier(.2,.9,.3,1),-webkit-mask-position var(--d,1.6s) ease-out,mask-position var(--d,1.6s) ease-out}
 .t.brush.on{transform:none;-webkit-mask-position:0 0;mask-position:0 0}
@@ -101,7 +99,7 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 .bf b{position:absolute;left:-110px;right:-110px;top:150px;text-align:center;font:400 62px 'Great Vibes','TeX Gyre Chorus',cursive;color:#8b2f5c;text-shadow:0 0 8px #fff,0 0 18px #fff,0 0 3px #fff;opacity:0;transition:opacity .6s}
 .bf.done b{opacity:1}
 .bf.done svg{filter:drop-shadow(0 0 26px #fff) drop-shadow(0 0 40px rgba(255,180,210,.9))}
-#wish{position:absolute;left:110px;right:110px;top:560px;padding:50px 50px 64px;border-radius:44px;background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 0 4px #fff,0 0 0 8px #e7a3c0,0 30px 80px rgba(94,26,60,.35);text-align:center;opacity:0;transform:scale(.4) rotate(-6deg);transition:opacity .4s,transform .8s cubic-bezier(.2,1.5,.4,1);z-index:20}
+#wish{position:absolute;left:110px;right:110px;top:560px;padding:50px 50px 64px;border-radius:44px;background:rgba(255,255,255,.95);box-shadow:0 0 0 4px #fff,0 0 0 8px #e7a3c0,0 30px 80px rgba(94,26,60,.35);text-align:center;opacity:0;transform:scale(.4) rotate(-6deg);transition:opacity .4s,transform .8s cubic-bezier(.2,1.5,.4,1);z-index:20}
 #wish.on{opacity:1;transform:none}
 #wish .k{font:600 30px Cinzel,Georgia,serif;letter-spacing:4px;color:#a8436f}
 #wish .nm{font-size:130px;position:static;margin:0 0 8px}
@@ -178,12 +176,12 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 /* ===== hint ===== */
 #hint{position:absolute;left:40px;right:40px;bottom:90px;z-index:40;text-align:center;opacity:0;transition:opacity .5s;pointer-events:none}
 #hint span{display:inline-block;font:italic 600 42px 'Cormorant Garamond','Crimson Pro',Georgia,serif;color:#fff;background:linear-gradient(180deg,#d77aa2,#a8436f 55%,#6e1f47);padding:16px 50px;border-radius:60px;box-shadow:0 0 0 4px #fff,0 12px 30px rgba(94,26,60,.4);animation:bp 1.6s ease-in-out infinite}
-#intro{position:fixed;inset:0;z-index:120;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%,#fff0f5,#f6c6d6 70%,#e9a5bd);cursor:pointer;transition:opacity .8s}
-#intro.show{display:flex}
+#intro{position:fixed;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%,#fff0f5,#f6c6d6 70%,#e9a5bd);cursor:pointer;transition:opacity .8s}
 #intro.hide{opacity:0;pointer-events:none}
 #intro .ih{font-size:90px;animation:bp 1.2s ease-in-out infinite}
 #intro .it{font:400 64px 'Great Vibes','TeX Gyre Chorus',cursive;color:#741a40;margin-top:10px;text-align:center;padding:0 20px}
-#intro .is{font:italic 600 24px 'Cormorant Garamond','Crimson Pro',Georgia,serif;color:#8b2f5c;letter-spacing:2px;margin-top:8px;animation:bp 1.6s ease-in-out infinite}
+#intro .is{font:italic 600 24px 'Cormorant Garamond','Crimson Pro',Georgia,serif;color:#8b2f5c;letter-spacing:2px;margin-top:8px}
+#intro.ready .is{font-size:30px;animation:bp 1.6s ease-in-out infinite}
 #flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:45;transition:opacity .35s}
 </style></head>
 <body>
@@ -199,7 +197,7 @@ canvas.fx{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-even
 </svg>
 <div id="outer"></div>
 <div id="start"></div>
-<div id="intro"><div class="ih">💗</div><div class="it">A surprise for you</div><div class="is">tap to open</div></div>
+<div id="intro"><div class="ih">💗</div><div class="it">A surprise for you</div><div class="is">loading… 0%</div></div>
 <div id="replay">↻ Replay</div>
 <audio id="song" preload="auto" loop></audio>
 <div id="wrap"><div id="stage">
@@ -337,9 +335,8 @@ const LAYERS = {}, OUTER = {};
 Object.entries(ORDER.bg).forEach(([key, src]) => {
   if (!src) return;
   const L = document.createElement("div"); L.className = "layer";
-  L.innerHTML = `<div class="zoom"><img class="back" src="${src}" alt=""><div class="art"><img class="main" src="${src}" alt=""></div></div>`;
+  L.innerHTML = `<div class="zoom"><div class="art"><img class="main" src="${src}" alt=""></div></div>`;
   $("bgs").appendChild(L); LAYERS[key] = L;
-  const O = document.createElement("img"); O.src = src; O.alt = ""; $("outer").appendChild(O); OUTER[key] = O;
   const img = L.querySelector("img.main");
   img.onload = () => place(key, L, src, img.naturalWidth, img.naturalHeight);
 });
@@ -374,9 +371,12 @@ function extras(key, A, src, w, h) {
   }
 }
 let curL = null;
-function showLayer(key) { const L = LAYERS[key]; if (!L) return; Object.values(LAYERS).forEach(x => x.classList.toggle("on", x === L)); Object.entries(OUTER).forEach(([k, o]) => o.classList.toggle("on", k === key)); curL = L; }
+function showLayer(key) { const L = LAYERS[key]; if (!L) return; Object.values(LAYERS).forEach(x => x.classList.toggle("on", x === L)); curL = L; }
 showLayer("cover");
-let k = 1; function fit() { k = Math.min(innerWidth / 1080, innerHeight / 1920); $("stage").style.transform = `scale(${k})`; } addEventListener("resize", fit); fit();
+let k = 1, fw = 0, fh = 0;
+function fit() { const w = innerWidth, h = innerHeight; if (w === fw && Math.abs(h - fh) < 160) return; fw = w; fh = h;   // ignore the small jump when the iPhone address bar moves
+  k = Math.min(w / 1080, h / 1920); $("stage").style.transform = `scale(${k})`; }
+addEventListener("resize", fit); addEventListener("orientationchange", () => { fw = 0; setTimeout(fit, 300); }); fit();
 const stagePt = e => { const r = $("stage").getBoundingClientRect(); return [(e.clientX - r.left) / k, (e.clientY - r.top) / k]; };
 /* ===== floating balloons ===== */
 const BC = [["#ff8fb3", "#c2185b"], ["#ffd56b", "#d4a23e"], ["#c9b6ff", "#7b5cff"], ["#9be3d8", "#2aa198"], ["#fff1f5", "#e7a3c0"]];
@@ -400,9 +400,8 @@ function petals(n) { for (let i = 0; i < n; i++) P.push({ k: 4, x: rnd() * 1080,
 function firework(x, y) { const col = ["#ff4d8d", "#c2185b", "#f3a712", "#7b5cff", "#00a8a8"][Math.floor(rnd() * 5)]; for (let i = 0; i < 70; i++) { const a = i / 70 * 6.28, v = 6 + rnd() * 6; P.push({ k: 0, x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, s: 3.5 + rnd() * 2, c: i % 4 ? col : "#fff", l: 1, d: .011, dr: .96, g: .06 }); } }
 function heartPath(c, s) { c.beginPath(); c.moveTo(0, s * .3); c.bezierCurveTo(-s, -s * .3, -s * .5, -s, 0, -s * .45); c.bezierCurveTo(s * .5, -s, s, -s * .3, 0, s * .3); c.fill(); }
 function petal(c, p) { const s = p.s, g = c.createLinearGradient(0, -s, 0, s); g.addColorStop(0, p.c[0]); g.addColorStop(1, p.c[1]); c.fillStyle = g;
-  c.shadowColor = "rgba(255,255,255,.95)"; c.shadowBlur = 10;
   c.beginPath(); c.moveTo(0, -s); c.bezierCurveTo(s * .9, -s * .6, s * .7, s * .7, 0, s); c.bezierCurveTo(-s * .7, s * .7, -s * .9, -s * .6, 0, -s); c.fill();
-  c.shadowBlur = 0; c.globalAlpha *= .35 + .65 * Math.max(0, Math.sin(RT * 3 + p.ph)); c.fillStyle = "#fff";            // the shine glint
+  c.globalAlpha *= .35 + .65 * Math.max(0, Math.sin(RT * 3 + p.ph)); c.fillStyle = "#fff";            // the shine glint
   c.beginPath(); c.ellipse(-s * .2, -s * .35, s * .18, s * .4, -.4, 0, 7); c.fill(); }
 function frame(now) { const dt = Math.min(.05, (now - last) / 1000); last = now; RT += dt;
   if (rnd() < .07) petals(1);
@@ -412,12 +411,12 @@ function frame(now) { const dt = Math.min(.05, (now - last) / 1000); last = now;
   for (const [x, y, w, h] of TW) if (rnd() < .15) P.push({ k: 5, x: x + rnd() * w, y: y + rnd() * h, vx: 0, vy: 0, g: 0, dr: 1, s: 10 + rnd() * 16, c: rnd() < .5 ? "#ffffff" : "#fff2c0", l: 1, d: .025 });
   if (swingF) swingF(dt);
   if (fwOn) { fwT -= dt; if (fwT <= 0) { firework(150 + rnd() * 780, 300 + rnd() * 600); fwT = .45 + rnd() * .5; } }
-  P = P.filter(p => p.l > 0 && p.y < 2000 && p.y > -500); if (P.length > 450) P.splice(0, P.length - 450);
+  P = P.filter(p => p.l > 0 && p.y < 2000 && p.y > -500); if (P.length > 260) P.splice(0, P.length - 260);
   fx.clearRect(0, 0, 1080, 1920);
   for (const p of P) { p.vx *= p.dr; p.vy *= p.dr; p.vy += p.g; p.x += p.vx; p.y += p.vy; p.l -= p.d; fx.globalAlpha = cl(p.l * 1.4); fx.fillStyle = p.c;
     if (p.k === 2) { p.r += p.vr; fx.save(); fx.translate(p.x, p.y); fx.rotate(p.r); fx.fillRect(-p.s / 2, -p.s / 5, p.s, p.s / 2.5); fx.restore(); }
     else if (p.k === 3) { fx.save(); fx.translate(p.x, p.y); heartPath(fx, p.s); fx.restore(); }
-    else if (p.k === 5) { fx.save(); fx.translate(p.x, p.y); fx.globalAlpha = Math.sin(cl(p.l) * Math.PI); fx.shadowColor = "#fff"; fx.shadowBlur = 12; star(fx, p.s * Math.sin(cl(p.l) * Math.PI)); fx.restore(); }
+    else if (p.k === 5) { fx.save(); fx.translate(p.x, p.y); fx.globalAlpha = Math.sin(cl(p.l) * Math.PI); star(fx, p.s * Math.sin(cl(p.l) * Math.PI)); fx.restore(); }
     else if (p.k === 4) { p.r += p.vr; p.x += Math.sin(RT * 1.6 + p.ph) * .9; fx.save(); fx.translate(p.x, p.y); fx.rotate(p.r + Math.sin(RT * 2 + p.ph) * .4); fx.scale(1, .6 + .4 * Math.abs(Math.sin(RT * 1.4 + p.ph))); petal(fx, p); fx.restore(); }
     else { fx.beginPath(); fx.arc(p.x, p.y, p.s, 0, 7); fx.fill(); } }
   fx.globalAlpha = 1; requestAnimationFrame(frame); }
@@ -426,17 +425,34 @@ let tapCb = null;
 function hint(t) { if (t) { $("hint").firstChild.textContent = t; $("hint").style.opacity = 1; } else $("hint").style.opacity = 0; }
 function waitTap(t) { return new Promise(res => { hint(t); tapCb = () => { hint(); tapCb = null; res(); }; }); }
 function flash(a = .7) { $("flash").style.opacity = a; setTimeout(() => $("flash").style.opacity = 0, 260); }
-$("wrap").addEventListener("pointerdown", e => { const [x, y] = stagePt(e); sparks(x, y, 16, 7); if (tapCb) tapCb(); });
+$("wrap").addEventListener("pointerdown", e => { const [x, y] = stagePt(e); sparks(x, y, 16, 7); keepSong(); if (tapCb) tapCb(); });
 async function type(el, txt, ms) { for (let i = 1; i <= txt.length; i++) { el.textContent = txt.slice(0, i) + (i < txt.length ? "|" : ""); await wait(ms); } }
 /* ===== 1 cover plays on its own ===== */
 TW = [[200, 400, 680, 300]];
 let coverStarted = false;
 async function startCover() { if (coverStarted) return; coverStarted = true; await wait(500); await write("cH", "Happy Birthday", 70); await wait(200); await write("cN", NM, 120);
   sparks(540, 580, 140, 14); hearts(540, 640, 24); await wait(400); on("cPh"); await wait(1000); on("cBtn"); }
-const song = $("song"); song.src = ORDER.song;
+const song = $("song");
+const SONGS = [...new Set([ORDER.song, "siri.mp3", "siri.mpeg", "siri.m4a", "song.mp3", "song.mpeg"])]; let si = 0;
+song.addEventListener("error", () => { if (++si < SONGS.length) { song.src = SONGS[si]; song.load(); } });   // tries the next name if the song file is not found
+song.src = SONGS[0]; song.load();
 $("intro").querySelector(".it").textContent = "A surprise for " + NM;
-song.play().then(startCover).catch(() => $("intro").classList.add("show"));        // phones need one tap before music can play
-$("intro").addEventListener("click", () => { song.play().catch(() => {}); $("intro").classList.add("hide"); startCover(); });
+let ready = false;
+(async () => {      // load every picture first, so no screen waits or gets stuck later
+  const srcs = [...new Set([...Object.values(ORDER.bg).filter(Boolean), ORDER.cover, ...ORDER.memories.map(m => m[0]), ORDER.quizPhoto, ...ORDER.finalPhotos])];
+  const st = $("intro").querySelector(".is"); let done = 0;
+  const one = async src => { await loadImg(src); st.textContent = `loading… ${Math.round(++done / srcs.length * 100)}%`; };
+  await Promise.race([Promise.all(srcs.map(one)), wait(12000)]);
+  ready = true; st.textContent = "tap to open 💗"; $("intro").classList.add("ready");
+})();
+let playing = false;
+$("intro").addEventListener("click", () => { if (!ready) return; playing = true; song.play().catch(() => {}); $("intro").classList.add("hide"); startCover(); });
+const keepSong = () => { if (playing && !document.hidden && song.paused) song.play().catch(() => {}); };
+song.addEventListener("pause", () => setTimeout(keepSong, 400));
+song.addEventListener("ended", () => { song.currentTime = 0; keepSong(); });
+song.addEventListener("stalled", () => setTimeout(keepSong, 800));
+document.addEventListener("visibilitychange", keepSong);
+addEventListener("pageshow", keepSong);
 /* ===== 2 gift box, then memories one by one ===== */
 async function giftAndMemories() {
   showLayer("memories"); ambient = "sparkle"; TW = [[150, 330, 780, 140]]; on("s2");
