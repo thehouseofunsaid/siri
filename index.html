@@ -387,11 +387,12 @@ let curL = null;
 function showLayer(key) { const L = LAYERS[key]; if (!L) return;
   Object.values(LAYERS).forEach(x => { if (x !== L && x.classList.contains("on")) { x.classList.remove("on"); setTimeout(() => { if (!x.classList.contains("on")) x.style.display = "none"; }, 1400); } else if (x !== L) x.style.display = "none"; });
   L.style.display = ""; void L.offsetWidth; L.classList.add("on"); curL = L; }
-let k = 1, fw = 0, fh = 0;
+let k = 1, fw = 0, fh = 0; const ZOOM = window.CSS && CSS.supports && CSS.supports("zoom", "0.5");
 function fit() { const w = innerWidth, h = innerHeight; if (w === fw && Math.abs(h - fh) < 160) return; fw = w; fh = h;   // ignore the small jump when the iPhone address bar moves
-  k = Math.min(w / 1080, h / 1920); $("stage").style.transform = `scale(${k})`; }
+  k = Math.min(w / 1080, h / 1920); const st = $("stage");
+  if (ZOOM) { st.style.transform = ""; st.style.zoom = k; } else st.style.transform = `scale(${k})`; }   // zoom draws at real phone size = far less memory on iPhone
 addEventListener("resize", fit); addEventListener("orientationchange", () => { fw = 0; setTimeout(fit, 300); }); fit();
-const stagePt = e => { const r = $("stage").getBoundingClientRect(); return [(e.clientX - r.left) / k, (e.clientY - r.top) / k]; };
+const stagePt = e => { const r = $("stage").getBoundingClientRect(); return [(e.clientX - r.left) * 1080 / r.width, (e.clientY - r.top) * 1920 / r.height]; };
 /* ===== floating balloons ===== */
 const BC = [["#ff8fb3", "#c2185b"], ["#ffd56b", "#d4a23e"], ["#c9b6ff", "#7b5cff"], ["#9be3d8", "#2aa198"], ["#fff1f5", "#e7a3c0"]];
 let balloonsOn = true;
@@ -601,7 +602,7 @@ function paintFoil() {
   qx.font = "400 86px 'Great Vibes', 'TeX Gyre Chorus', cursive"; qx.fillText("unlock our memory", 350, 295);
   qx.font = "700 36px Georgia, serif"; qx.fillText("✦ ✦ ✦", 350, 360); qx.shadowBlur = 0;
 }
-function qPt(e) { const r = qc.getBoundingClientRect(); return [(e.clientX - r.left) * 700 / r.width, (e.clientY - r.top) * 520 / r.height]; }
+function qPt(e) { const [x, y] = stagePt(e); return [x - 190, y - 400]; }
 function qScratch(x, y) { qx.globalCompositeOperation = "destination-out"; qx.lineCap = "round"; qx.lineWidth = 110;
   if (qLast) { qx.beginPath(); qx.moveTo(qLast[0], qLast[1]); qx.lineTo(x, y); qx.stroke(); } qx.beginPath(); qx.arc(x, y, 55, 0, 7); qx.fill(); qLast = [x, y];
   sparks(190 + x, 400 + y, 3, 6); if (++qMoves % 10 === 0) qCheck(); }
